@@ -41,13 +41,13 @@ def test_ask_with_force_route():
 
 
 def test_upload_non_pdf_rejected():
-    """Uploading a non-PDF file should return a 400 error."""
+    """Uploading an unsupported file format should return a 400 error."""
     response = client.post(
         "/api/v1/upload",
-        files={"file": ("test.txt", b"some text content", "text/plain")},
+        files={"file": ("test.csv", b"col1,col2\nval1,val2", "text/csv")},
     )
     assert response.status_code == 400
-    assert "PDF" in response.json()["detail"]
+    assert "Unsupported file format" in response.json()["detail"]
 
 
 def test_ask_empty_question_rejected():
